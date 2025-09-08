@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ai Recipe Generator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>This is a test test test</h1>
+    <header>
+        <h1>AI Recipe Generator</h1>
+        <p>Enter your ingredients and choose a cuisine!</p>
+    </header>
+
+    <main>
+        <section class="input-section">
+            <label for="ingredients">Ingredients (comma seperated) :</label>
+            <input type="text" id="ingredients" placeholder="e.g chicken, tomatoe, onion">
+
+            <label for="cuisine">Select Cuisine:</label>
+            <select id="cuisine">
+                <option>Any</option>
+                <option>Indian</option>
+                <option>Black</option>
+                <option>White</option>
+                <option>Coloured</option>
+            </select>
+
+            <button id="generate">Generate</button>
+        </section>
+
+        <section id="recipe-output" class="output-section">
+            <h2>Your Recipe Will Appear Here</h2>
+            <div id="recipe-text"></div>
+        </section>
+    </main>
 </body>
 </html>
