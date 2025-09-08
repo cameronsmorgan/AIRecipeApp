@@ -1,0 +1,9 @@
+/* minimal styles */
+body { font-family: Inter, Arial, sans-serif; background:#fafafa; color:#222; margin:0; padding:2rem; }
+.container { max-width:900px; margin:0 auto; }
+h1 { margin:0 0 0.25rem 0; }
+.card { background:white; padding:1rem; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.06); margin-top:1rem; }
+label { display:block; font-weight:600; margin-top:0.5rem; }
+input, select { width:100%; padding:0.6rem; margin-top:0.25rem; border-radius:6px; border:1px solid #ddd; }
+button { margin-top:1rem; padding:0.7rem 1rem; background:#e94e38; color:white; border:none; border-radius:6px; cursor:pointer; }
+.output ul, .output ol { margin:0.5rem 0 1rem 1.25rem; }

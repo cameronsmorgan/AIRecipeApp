@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SpiceSync — AI Recipe Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>SpiceSync</h1>
+    <p>Enter ingredients (comma separated) and choose a cuisine.</p>
+
+    <div class="card">
+      <label>Ingredients (comma separated)</label>
+      <input id="ingredients" placeholder="eg. chicken, tomato, onion, turmeric" />
+
+      <label>Cuisine</label>
+      <select id="cuisine">
+        <option value="any">Any</option>
+        <option value="Zulu">Zulu</option>
+        <option value="Xhosa">Xhosa</option>
+        <option value="Cape Malay">Cape Malay</option>
+        <option value="Indian South African">Indian South African</option>
+        <option value="Afrikaner">Afrikaner</option>
+        <option value="Italian">Italian</option>
+        <option value="Chinese">Chinese</option>
+      </select>
+
+      <button id="generate">Generate Recipe</button>
+    </div>
+
+    <div id="output" class="card output">
+      <h2 id="recipe-title">Your recipe will appear here</h2>
+      <div id="recipe-meta"></div>
+      <ul id="ingredients-list"></ul>
+      <ol id="steps-list"></ol>
+      <pre id="raw-output" style="display:none; white-space:pre-wrap"></pre>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
