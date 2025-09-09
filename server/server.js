@@ -6,7 +6,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-app.use(cors()); // allow your frontend origin(s) in production
+app.use(cors()); // allow  frontend  in production
 app.use(express.json());
 
 // Serve static frontend (public folder)
@@ -21,14 +21,14 @@ if (!OPENROUTER_KEY) {
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-app.post('/api/generate', async (req, res) => {
+app.post('/api/generate', async (req, res) => {    //req = the incoming HTTP request from the browser || res = the response object that we send back
   try {
     const { ingredients, cuisine } = req.body;
     if (!ingredients) return res.status(400).json({ error: 'Missing ingredients' });
 
     // Build a clear prompt that asks for a JSON response
-    const systemPrompt = `You are a concise, accurate recipe assistant. Answer with clear step-by-step instructions.`;
-    const userPrompt = `Create a ${cuisine} recipe using the following ingredients: ${ingredients}.
+    const systemPrompt = `You are a concise, accurate recipe assistant. Answer with clear step-by-step instructions.`;   //tells ai how to behave
+    const userPrompt = `Create a ${cuisine} recipe using the following ingredients: ${ingredients}.   
 Return the recipe as strict JSON (no extra commentary) with keys:
 {
   "title": string,
@@ -37,7 +37,7 @@ Return the recipe as strict JSON (no extra commentary) with keys:
   "ingredients": [{"name": string, "quantity": string (optional)}],
   "steps": [string...],
   "notes": string (optional)
-}`;
+}`;                                                                                                                       //userPrompt tells ai what to generate
 
     const body = {
       model: 'openai/gpt-oss-20b:free',
@@ -46,8 +46,8 @@ Return the recipe as strict JSON (no extra commentary) with keys:
         { role: 'user', content: userPrompt }
       ],
       response_format: { type: 'json_object' }, // request structured JSON where supported
-      max_tokens: 800,
-      temperature: 0.7
+      max_tokens: 800,   //limit length of API's reply
+      temperature: 0.7   //controls randomness/creativity. lower number = more predictable
     };
 
     const r = await axios.post(OPENROUTER_URL, body, {
@@ -55,7 +55,7 @@ Return the recipe as strict JSON (no extra commentary) with keys:
         Authorization: `Bearer ${OPENROUTER_KEY}`,
         'Content-Type': 'application/json'
       },
-      timeout: 120000
+      timeout: 120000  //fail if takes longer than 2mins
     });
 
     const data = r.data;
