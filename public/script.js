@@ -3,10 +3,9 @@ const generateBtn = document.getElementById('generate');
 const ingredientsInput = document.getElementById('ingredients');
 const cuisineSelect = document.getElementById('cuisine');
 
-const titleEl = document.getElementById('recipe-title');
-const metaEl = document.getElementById('recipe-meta');
-const ingList = document.getElementById('ingredients-list');
-const stepsList = document.getElementById('steps-list');
+// Output containers
+const recipeListEl = document.getElementById('recipe-list');
+const recipeDetailEl = document.getElementById('recipe-detail');
 const rawOutput = document.getElementById('raw-output');
 
 async function generateRecipe() {
@@ -17,7 +16,6 @@ async function generateRecipe() {
     return;
   }
 
-  // UI: disable button
   generateBtn.disabled = true;
   generateBtn.textContent = 'Generating...';
 
@@ -27,64 +25,59 @@ async function generateRecipe() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ingredients, cuisine })
     });
+
     const json = await resp.json();
     if (!resp.ok || !json.success) {
       console.error('API error', json);
-      titleEl.textContent = 'Error generating recipe';
-      metaEl.textContent = (json?.error || JSON.stringify(json));
+      recipeListEl.innerHTML = `<p>Error: ${json?.error || 'unknown error'}</p>`;
       rawOutput.style.display = 'block';
       rawOutput.textContent = JSON.stringify(json, null, 2);
       return;
     }
 
-    const out = json.output;
+    const recipes = json.recipes;
     rawOutput.style.display = 'none';
-    // If we get a raw string (fallback), show it
-    if (out?.raw) {
-      titleEl.textContent = 'Generated (raw text)';
-      metaEl.textContent = '';
-      ingList.innerHTML = '';
-      stepsList.innerHTML = '';
-      rawOutput.style.display = 'block';
-      rawOutput.textContent = out.raw;
+
+    // Clear containers
+    recipeListEl.innerHTML = '';
+    recipeDetailEl.innerHTML = '';
+
+    if (!recipes || recipes.length === 0) {
+      recipeListEl.innerHTML = '<p>No recipes generated.</p>';
       return;
     }
 
-    // Normal structured object
-    titleEl.textContent = out.title || 'Untitled recipe';
-    metaEl.textContent = `${out.servings ? out.servings + ' servings' : ''} ${out.time_minutes ? ' • ' + out.time_minutes + ' mins' : ''}`;
-
-    // ingredients
-    ingList.innerHTML = '';
-    if (Array.isArray(out.ingredients)) {
-      out.ingredients.forEach(i => {
-        const li = document.createElement('li');
-        if (typeof i === 'string') li.textContent = i;
-        else {
-          li.textContent = (i.quantity ? i.quantity + ' ' : '') + (i.name || '');
-        }
-        ingList.appendChild(li);
-      });
-    }
-
-    // steps
-    stepsList.innerHTML = '';
-    if (Array.isArray(out.steps)) {
-      out.steps.forEach(s => {
-        const li = document.createElement('li');
-        li.textContent = s;
-        stepsList.appendChild(li);
-      });
-    }
+    // Create recipe cards
+    recipes.forEach((recipe) => {
+      const card = document.createElement('div');
+      card.className = 'recipe-card';
+      card.innerHTML = `
+        <h3>${recipe.title || 'Untitled recipe'}</h3>
+        <p>${recipe.time_minutes ? recipe.time_minutes + ' mins • ' : ''}${recipe.servings ? recipe.servings + ' servings' : ''}</p>
+      `;
+      card.addEventListener('click', () => showRecipeDetail(recipe));
+      recipeListEl.appendChild(card);
+    });
 
   } catch (err) {
     console.error('Network error', err);
-    titleEl.textContent = 'Network error';
-    metaEl.textContent = err.message;
+    recipeListEl.innerHTML = `<p>Network error: ${err.message}</p>`;
   } finally {
     generateBtn.disabled = false;
-    generateBtn.textContent = 'Generate Recipe';
+    generateBtn.textContent = 'Generate Recipes';
   }
+}
+
+function showRecipeDetail(recipe) {
+  recipeDetailEl.innerHTML = `
+    <h2>${recipe.title}</h2>
+    <p>${recipe.servings ? recipe.servings + ' servings • ' : ''}${recipe.time_minutes ? recipe.time_minutes + ' mins' : ''}</p>
+    <h3>Ingredients</h3>
+    <ul>${(recipe.ingredients || []).map(i => `<li>${i.quantity ? i.quantity + ' ' : ''}${i.name || i}</li>`).join('')}</ul>
+    <h3>Steps</h3>
+    <ol>${(recipe.steps || []).map(s => `<li>${s}</li>`).join('')}</ol>
+    ${recipe.notes ? `<h3>Notes</h3><p>${recipe.notes}</p>` : ''}
+  `;
 }
 
 generateBtn.addEventListener('click', generateRecipe);

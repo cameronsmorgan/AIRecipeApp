@@ -7,3 +7,29 @@ label { display:block; font-weight:600; margin-top:0.5rem; }
 input, select { width:100%; padding:0.6rem; margin-top:0.25rem; border-radius:6px; border:1px solid #ddd; }
 button { margin-top:1rem; padding:0.7rem 1rem; background:#e94e38; color:white; border:none; border-radius:6px; cursor:pointer; }
 .output ul, .output ol { margin:0.5rem 0 1rem 1.25rem; }
+.recipe-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.recipe-card {
+  flex: 1 1 calc(30% - 1rem);
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.recipe-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.recipe-detail {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 2px solid #ccc;
+}
