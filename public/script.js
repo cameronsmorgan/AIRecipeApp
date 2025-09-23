@@ -1,13 +1,153 @@
 // public/script.js
+
+// DOM elements
 const generateBtn = document.getElementById('generate');
 const ingredientsInput = document.getElementById('ingredients');
 const cuisineSelect = document.getElementById('cuisine');
 
-// Output containers
 const recipeListEl = document.getElementById('recipe-list');
 const recipeDetailEl = document.getElementById('recipe-detail');
 const rawOutput = document.getElementById('raw-output');
 
+const toggleFavsBtn = document.getElementById('toggle-favorites');
+const favCountEl = document.getElementById('fav-count');
+const favoritesPanel = document.getElementById('favorites-panel');
+const favoritesListEl = document.getElementById('favorites-list');
+const noFavsEl = document.getElementById('no-favs');
+const clearFavsBtn = document.getElementById('clear-favs');
+const exportFavsBtn = document.getElementById('export-favs');
+
+// localStorage key
+const LOCAL_KEY = 'spicesync_favorites_v1';
+
+// ----------------- Favorites utilities -----------------
+function recipeId(recipe) {
+  const ingNames = JSON.stringify((recipe.ingredients || []).map(i => (typeof i === 'string' ? i : (i.name || ''))));
+  return `${(recipe.title || '').trim()}|${ingNames}`;
+}
+
+function loadFavorites() {
+  try {
+    const raw = localStorage.getItem(LOCAL_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.error('Failed to load favorites', e);
+    return [];
+  }
+}
+
+function saveFavorites(arr) {
+  try {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(arr));
+    updateFavoritesCount();
+  } catch (e) {
+    console.error('Failed to save favorites', e);
+  }
+}
+
+function isFavorited(recipe) {
+  const id = recipeId(recipe);
+  return loadFavorites().some(r => recipeId(r) === id);
+}
+
+function addFavorite(recipe) {
+  const favorites = loadFavorites();
+  const id = recipeId(recipe);
+  if (favorites.some(r => recipeId(r) === id)) return false;
+  const toSave = {
+    title: recipe.title || 'Untitled',
+    servings: recipe.servings || null,
+    time_minutes: recipe.time_minutes || null,
+    ingredients: recipe.ingredients || [],
+    steps: recipe.steps || [],
+    notes: recipe.notes || ''
+  };
+  favorites.unshift(toSave);
+  saveFavorites(favorites);
+  renderFavoritesList();
+  return true;
+}
+
+function removeFavorite(recipe) {
+  const favorites = loadFavorites();
+  const id = recipeId(recipe);
+  const filtered = favorites.filter(r => recipeId(r) !== id);
+  saveFavorites(filtered);
+  renderFavoritesList();
+}
+
+function clearFavorites() {
+  if (!confirm('Clear all favorites? This cannot be undone.')) return;
+  saveFavorites([]);
+  renderFavoritesList();
+}
+
+function exportFavorites() {
+  const favorites = loadFavorites();
+  const blob = new Blob([JSON.stringify(favorites, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'spicesync_favorites.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ----------------- UI: favorites rendering -----------------
+function updateFavoritesCount() {
+  const favorites = loadFavorites();
+  favCountEl.textContent = favorites.length;
+}
+
+function renderFavoritesList() {
+  const favorites = loadFavorites();
+  favoritesListEl.innerHTML = '';
+  updateFavoritesCount();
+
+  if (!favorites.length) {
+    noFavsEl.style.display = 'block';
+    return;
+  } else {
+    noFavsEl.style.display = 'none';
+  }
+
+  favorites.forEach(fav => {
+    const item = document.createElement('div');
+    item.className = 'favorite-item';
+    item.innerHTML = `
+      <div>
+        <div class="favorite-title">${fav.title}</div>
+        <div class="favorite-meta">${fav.time_minutes ? fav.time_minutes + ' mins • ' : ''}${fav.servings ? fav.servings + ' servings' : ''}</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="btn view">View</button>
+        <button class="btn danger remove">Remove</button>
+      </div>
+    `;
+
+    item.querySelector('.view').addEventListener('click', () => {
+      showRecipeDetail(fav);
+      // scroll to top so detail is visible
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    item.querySelector('.remove').addEventListener('click', () => {
+      removeFavorite(fav);
+    });
+
+    favoritesListEl.appendChild(item);
+  });
+}
+
+// toggle favorites panel
+function toggleFavoritesPanel() {
+  favoritesPanel.classList.toggle('hidden');
+  renderFavoritesList();
+}
+
+// ----------------- API + rendering -----------------
 async function generateRecipe() {
   const ingredients = ingredientsInput.value.trim();
   const cuisine = cuisineSelect.value || 'any';
@@ -35,19 +175,17 @@ async function generateRecipe() {
       return;
     }
 
-    const recipes = json.recipes;
+    const recipes = json.recipes || [];
     rawOutput.style.display = 'none';
 
-    // Clear containers
     recipeListEl.innerHTML = '';
     recipeDetailEl.innerHTML = '';
 
-    if (!recipes || recipes.length === 0) {
+    if (!recipes.length) {
       recipeListEl.innerHTML = '<p>No recipes generated.</p>';
       return;
     }
 
-    // Create recipe cards
     recipes.forEach((recipe) => {
       const card = document.createElement('div');
       card.className = 'recipe-card';
@@ -69,15 +207,62 @@ async function generateRecipe() {
 }
 
 function showRecipeDetail(recipe) {
+  // ingredients
+  const ingHtml = (recipe.ingredients || []).map(i => {
+    if (typeof i === 'string') return `<li>${i}</li>`;
+    return `<li>${i.quantity ? i.quantity + ' ' : ''}${i.name || ''}</li>`;
+  }).join('');
+
+  // steps
+  const stepsHtml = (recipe.steps || []).map(s => `<li>${s}</li>`).join('');
+
+  const favorited = isFavorited(recipe);
+
   recipeDetailEl.innerHTML = `
-    <h2>${recipe.title}</h2>
-    <p>${recipe.servings ? recipe.servings + ' servings • ' : ''}${recipe.time_minutes ? recipe.time_minutes + ' mins' : ''}</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+      <div>
+        <h2>${recipe.title}</h2>
+        <p class="muted">${recipe.servings ? recipe.servings + ' servings • ' : ''}${recipe.time_minutes ? recipe.time_minutes + ' mins' : ''}</p>
+      </div>
+      <div>
+        <button id="fav-toggle-btn" class="btn ${favorited ? 'danger' : 'primary'}">${favorited ? 'Remove from favorites' : 'Save to favorites'}</button>
+      </div>
+    </div>
+
     <h3>Ingredients</h3>
-    <ul>${(recipe.ingredients || []).map(i => `<li>${i.quantity ? i.quantity + ' ' : ''}${i.name || i}</li>`).join('')}</ul>
+    <ul>${ingHtml}</ul>
+
     <h3>Steps</h3>
-    <ol>${(recipe.steps || []).map(s => `<li>${s}</li>`).join('')}</ol>
+    <ol>${stepsHtml}</ol>
+
     ${recipe.notes ? `<h3>Notes</h3><p>${recipe.notes}</p>` : ''}
   `;
+
+  // Attach favorite toggle handler
+  const favBtn = document.getElementById('fav-toggle-btn');
+  favBtn.addEventListener('click', () => {
+    if (isFavorited(recipe)) {
+      removeFavorite(recipe);
+      favBtn.textContent = 'Save to favorites';
+      favBtn.classList.remove('danger');
+      favBtn.classList.add('primary');
+    } else {
+      addFavorite(recipe);
+      favBtn.textContent = 'Remove from favorites';
+      favBtn.classList.remove('primary');
+      favBtn.classList.add('danger');
+    }
+  });
+
+  recipeDetailEl.scrollIntoView({ behavior: 'smooth' });
 }
 
+// ----------------- event bindings -----------------
 generateBtn.addEventListener('click', generateRecipe);
+toggleFavsBtn.addEventListener('click', toggleFavoritesPanel);
+clearFavsBtn.addEventListener('click', clearFavorites);
+exportFavsBtn.addEventListener('click', exportFavorites);
+
+// initialize
+updateFavoritesCount();
+renderFavoritesList();
