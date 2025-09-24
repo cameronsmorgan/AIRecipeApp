@@ -9,13 +9,13 @@ const recipeListEl = document.getElementById('recipe-list');
 const recipeDetailEl = document.getElementById('recipe-detail');
 const rawOutput = document.getElementById('raw-output');
 
-const toggleFavsBtn = document.getElementById('toggle-favorites');
-const favCountEl = document.getElementById('fav-count');
-const favoritesPanel = document.getElementById('favorites-panel');
-const favoritesListEl = document.getElementById('favorites-list');
-const noFavsEl = document.getElementById('no-favs');
-const clearFavsBtn = document.getElementById('clear-favs');
-const exportFavsBtn = document.getElementById('export-favs');
+const toggleFavsBtn = document.getElementById('toggle-favorites'); // optional if present
+const favCountEl = document.getElementById('fav-count'); // optional if present
+const favoritesPanel = document.getElementById('favorites-panel'); // optional
+const favoritesListEl = document.getElementById('favorites-list'); // optional
+const noFavsEl = document.getElementById('no-favs'); // optional
+const clearFavsBtn = document.getElementById('clear-favs'); // optional
+const exportFavsBtn = document.getElementById('export-favs'); // optional
 
 // localStorage key
 const LOCAL_KEY = 'spicesync_favorites_v1';
@@ -97,20 +97,22 @@ function exportFavorites() {
 
 // ----------------- UI: favorites rendering -----------------
 function updateFavoritesCount() {
+  if (!favCountEl) return;
   const favorites = loadFavorites();
   favCountEl.textContent = favorites.length;
 }
 
 function renderFavoritesList() {
+  if (!favoritesListEl) return;
   const favorites = loadFavorites();
   favoritesListEl.innerHTML = '';
   updateFavoritesCount();
 
   if (!favorites.length) {
-    noFavsEl.style.display = 'block';
+    if (noFavsEl) noFavsEl.style.display = 'block';
     return;
   } else {
-    noFavsEl.style.display = 'none';
+    if (noFavsEl) noFavsEl.style.display = 'none';
   }
 
   favorites.forEach(fav => {
@@ -129,7 +131,6 @@ function renderFavoritesList() {
 
     item.querySelector('.view').addEventListener('click', () => {
       showRecipeDetail(fav);
-      // scroll to top so detail is visible
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
@@ -141,8 +142,9 @@ function renderFavoritesList() {
   });
 }
 
-// toggle favorites panel
+// toggle favorites panel (if present)
 function toggleFavoritesPanel() {
+  if (!favoritesPanel) return;
   favoritesPanel.classList.toggle('hidden');
   renderFavoritesList();
 }
@@ -218,7 +220,8 @@ function showRecipeDetail(recipe) {
 
   const favorited = isFavorited(recipe);
 
-  recipeDetailEl.innerHTML = `
+  // base detail HTML
+  let html = `
     <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
       <div>
         <h2>${recipe.title}</h2>
@@ -238,6 +241,31 @@ function showRecipeDetail(recipe) {
     ${recipe.notes ? `<h3>Notes</h3><p>${recipe.notes}</p>` : ''}
   `;
 
+  // Nutrition (if Nutrition helper available)
+  try {
+    if (window.Nutrition && typeof window.Nutrition.estimateNutritionForRecipe === 'function') {
+      const n = window.Nutrition.estimateNutritionForRecipe(recipe);
+      if (n && n.perServing) {
+        const nutHtml = `
+          <div class="nutrition-block">
+            <h3>Nutritional estimate (per serving)</h3>
+            <div class="nutrition-grid">
+              <div class="nut"><strong>${n.perServing.kcal} kcal</strong><small>Calories</small></div>
+              <div class="nut"><strong>${n.perServing.protein_g} g</strong><small>Protein</small></div>
+              <div class="nut"><strong>${n.perServing.carbs_g} g</strong><small>Carbs</small></div>
+              <div class="nut"><strong>${n.perServing.fat_g} g</strong><small>Fat</small></div>
+            </div>
+          </div>
+        `;
+        html += nutHtml;
+      }
+    }
+  } catch (e) {
+    console.warn('Nutrition estimation failed', e);
+  }
+
+  recipeDetailEl.innerHTML = html;
+
   // Attach favorite toggle handler
   const favBtn = document.getElementById('fav-toggle-btn');
   favBtn.addEventListener('click', () => {
@@ -255,13 +283,15 @@ function showRecipeDetail(recipe) {
   });
 
   recipeDetailEl.scrollIntoView({ behavior: 'smooth' });
+  window.currentRecipe = recipe; // store globally for toggle
+renderNutrition(recipe); // call nutrition renderer
 }
 
 // ----------------- event bindings -----------------
 generateBtn.addEventListener('click', generateRecipe);
-toggleFavsBtn.addEventListener('click', toggleFavoritesPanel);
-clearFavsBtn.addEventListener('click', clearFavorites);
-exportFavsBtn.addEventListener('click', exportFavorites);
+if (toggleFavsBtn) toggleFavsBtn.addEventListener('click', toggleFavoritesPanel);
+if (clearFavsBtn) clearFavsBtn.addEventListener('click', clearFavorites);
+if (exportFavsBtn) exportFavsBtn.addEventListener('click', exportFavorites);
 
 // initialize
 updateFavoritesCount();

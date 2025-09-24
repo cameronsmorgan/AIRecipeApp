@@ -7,18 +7,11 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="brand">
-      <h1>SpiceSync</h1>
-      <p class="tagline">Turn what's in your fridge into dinner.</p>
-    </div>
-    <div class="header-actions">
-      <button id="toggle-favorites" class="btn">Favorites (<span id="fav-count">0</span>)</button>
-    </div>
-  </header>
-
   <main class="container">
-    <section class="card">
+    <h1>AI Recipe App</h1>
+    <p>Enter ingredients (comma separated) and choose a cuisine.</p>
+
+    <div class="card">
       <label>Ingredients (comma separated)</label>
       <input id="ingredients" placeholder="eg. chicken, tomato, onion, turmeric" />
 
@@ -34,31 +27,28 @@
         <option value="Chinese">Chinese</option>
       </select>
 
-      <button id="generate" class="btn primary">Generate Recipes</button>
-    </section>
+      <button id="generate">Generate Recipe</button>
+    </div>
 
-    <section id="output" class="card output">
+    <div id="output" class="card output">
       <h2>Generated Recipes</h2>
+
+      <!-- clickable list of recipes -->
       <div id="recipe-list" class="recipe-list"></div>
+
+      <!-- full detail of selected recipe -->
       <div id="recipe-detail" class="recipe-detail"></div>
+
+      <!-- nutrition info with toggle -->
+      <div id="nutrition" class="nutrition"></div>
+
+      <!-- raw debug output -->
       <pre id="raw-output" style="display:none; white-space:pre-wrap"></pre>
-    </section>
-
-    <!-- Favorites panel -->
-    <aside id="favorites-panel" class="card favorites-panel hidden">
-      <div class="favorites-header">
-        <h3>Favorites</h3>
-        <div class="fav-controls">
-          <button id="export-favs" class="btn">Export</button>
-          <button id="clear-favs" class="btn danger">Clear all</button>
-        </div>
-      </div>
-
-      <div id="favorites-list" class="favorites-list"></div>
-      <p id="no-favs" class="muted" style="display:none;">No favorites yet — save a recipe to get started.</p>
-    </aside>
+    </div>
   </main>
 
+  <!-- Scripts -->
   <script src="script.js"></script>
+  <script src="nutrition.js"></script>
 </body>
 </html>
