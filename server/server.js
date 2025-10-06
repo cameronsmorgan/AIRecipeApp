@@ -36,13 +36,14 @@ Recipes must include:
 
 app.post('/api/generate', async (req, res) => {
   try {
-    const { ingredients, cuisine } = req.body;
+    const { ingredients, cuisine, language } = req.body;
     if (!ingredients) {
       return res.status(400).json({ error: 'Missing ingredients' });
     }
 
-   const userPrompt = `
+    const userPrompt = `
 Create exactly 3 different ${cuisine} recipes using these ingredients: ${ingredients}.
+Each recipe must be written in ${language || 'English'}.
 Each recipe should have 6–10 cooking steps, proper spices, cooking methods, and tips for flavor.
 
 Include an estimated nutritional breakdown per serving:
@@ -72,7 +73,6 @@ ALWAYS return ONLY valid JSON in this exact format:
   ]
 }
 `;
-
     // Get the model
     const model = genAI.getGenerativeModel({
       model: 'gemini-1.5-flash',

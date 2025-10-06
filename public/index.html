@@ -9,7 +9,7 @@
 <body>
   <main class="container">
     <h1>AI Recipe App</h1>
-    <p>Enter ingredients (comma separated) and choose a cuisine.</p>
+    <p>Enter ingredients (comma separated), choose a cuisine, and select a language.</p>
 
     <div class="card">
       <label>Ingredients (comma separated)</label>
@@ -25,6 +25,14 @@
         <option value="Afrikaner">Afrikaner</option>
         <option value="Italian">Italian</option>
         <option value="Chinese">Chinese</option>
+      </select>
+
+      <label>Language</label>
+      <select id="language">
+        <option value="en">English</option>
+        <option value="zu">Zulu</option>
+        <option value="xh">Xhosa</option>
+        <option value="af">Afrikaans</option>
       </select>
 
       <button id="generate">Generate Recipe</button>
@@ -44,6 +52,24 @@
 
       <!-- raw debug output -->
       <pre id="raw-output" style="display:none; white-space:pre-wrap"></pre>
+    </div>
+
+    <!-- Favorites Section -->
+    <div class="card favorites">
+      <button id="toggle-favorites" class="btn">
+        Show Favorites (<span id="fav-count">0</span>)
+      </button>
+
+      <div id="favorites-panel" class="hidden">
+        <h2>My Favorite Recipes</h2>
+        <div id="no-favs">No favorites saved yet.</div>
+        <div id="favorites-list"></div>
+
+        <div style="margin-top:1rem;display:flex;gap:1rem;">
+          <button id="clear-favs" class="btn danger">Clear All</button>
+          <button id="export-favs" class="btn">Export</button>
+        </div>
+      </div>
     </div>
   </main>
 
