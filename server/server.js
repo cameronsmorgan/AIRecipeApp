@@ -52,7 +52,7 @@ Include an estimated nutritional breakdown per serving:
 - carbs (g)
 - fat (g)
 
-ALWAYS return ONLY valid JSON in this exact format:
+REPLY return ONLY valid JSON in this exact format:
 
 {
   "recipes": [
@@ -75,7 +75,7 @@ ALWAYS return ONLY valid JSON in this exact format:
 `;
     // Get the model
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.5-flash-lite',
       generationConfig: {
         temperature: 0.9,
         maxOutputTokens: 3000,

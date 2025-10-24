@@ -4,68 +4,64 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SpiceSync — AI Recipe Generator</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="container">
-    <h1>AI Recipe App</h1>
-    <p>Enter ingredients (comma separated), choose a cuisine, and select a language.</p>
+    <h1>SpiceSync — AI Recipe Generator</h1>
+    <p>Enter ingredients, select a cuisine and language, then generate recipes.</p>
 
-    <div class="card">
-      <label>Ingredients (comma separated)</label>
+    <!-- Input Card -->
+    <div class="card input-card">
+      <label for="ingredients">Ingredients (comma separated)</label>
       <input id="ingredients" placeholder="eg. chicken, tomato, onion, turmeric" />
 
       <label>Cuisine</label>
-      <select id="cuisine">
-        <option value="any">Any</option>
-        <option value="Zulu">Zulu</option>
-        <option value="Xhosa">Xhosa</option>
-        <option value="Cape Malay">Cape Malay</option>
-        <option value="Indian South African">Indian South African</option>
-        <option value="Afrikaner">Afrikaner</option>
-        <option value="Italian">Italian</option>
-        <option value="Chinese">Chinese</option>
-      </select>
+      <div class="options-grid" id="cuisine-options">
+        <div class="option-card" data-type="cuisine" data-value="Zulu">Zulu</div>
+        <div class="option-card" data-type="cuisine" data-value="Xhosa">Xhosa</div>
+        <div class="option-card" data-type="cuisine" data-value="Cape Malay">Cape Malay</div>
+        <div class="option-card" data-type="cuisine" data-value="Indian South African">Indian SA</div>
+        <div class="option-card" data-type="cuisine" data-value="Afrikaner">Afrikaner</div>
+        <div class="option-card" data-type="cuisine" data-value="Italian">Italian</div>
+        <div class="option-card" data-type="cuisine" data-value="Chinese">Chinese</div>
+        <div class="option-card selected" data-type="cuisine" data-value="any">Any</div>
+      </div>
 
       <label>Language</label>
-      <select id="language">
-        <option value="en">English</option>
-        <option value="zu">Zulu</option>
-        <option value="xh">Xhosa</option>
-        <option value="af">Afrikaans</option>
-      </select>
+      <div class="options-grid" id="language-options">
+        <div class="option-card selected" data-type="language" data-value="en">English</div>
+        <div class="option-card" data-type="language" data-value="zu">Zulu</div>
+        <div class="option-card" data-type="language" data-value="xh">Xhosa</div>
+        <div class="option-card" data-type="language" data-value="af">Afrikaans</div>
+      </div>
 
-      <button id="generate">Generate Recipe</button>
+      <button id="generate" class="btn primary">Generate Recipes</button>
     </div>
 
+    <!-- Output Card -->
     <div id="output" class="card output">
       <h2>Generated Recipes</h2>
-
-      <!-- clickable list of recipes -->
       <div id="recipe-list" class="recipe-list"></div>
-
-      <!-- full detail of selected recipe -->
       <div id="recipe-detail" class="recipe-detail"></div>
-
-      <!-- nutrition info with toggle -->
       <div id="nutrition" class="nutrition"></div>
-
-      <!-- raw debug output -->
       <pre id="raw-output" style="display:none; white-space:pre-wrap"></pre>
     </div>
 
-    <!-- Favorites Section -->
+    <!-- Favorites Card -->
     <div class="card favorites">
-      <button id="toggle-favorites" class="btn">
-        Show Favorites (<span id="fav-count">0</span>)
-      </button>
+      <button id="toggle-favorites" class="btn">Show Favorites (<span id="fav-count">0</span>)</button>
 
       <div id="favorites-panel" class="hidden">
         <h2>My Favorite Recipes</h2>
         <div id="no-favs">No favorites saved yet.</div>
         <div id="favorites-list"></div>
-
-        <div style="margin-top:1rem;display:flex;gap:1rem;">
+        <div style="margin-top:1rem; display:flex; gap:1rem;">
           <button id="clear-favs" class="btn danger">Clear All</button>
           <button id="export-favs" class="btn">Export</button>
         </div>

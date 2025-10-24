@@ -1,11 +1,6 @@
-// public/script.js
-
-// DOM elements
+// ----------------- DOM Elements -----------------
 const generateBtn = document.getElementById('generate');
 const ingredientsInput = document.getElementById('ingredients');
-const cuisineSelect = document.getElementById('cuisine');
-const languageSelect = document.getElementById('language');
-
 const recipeListEl = document.getElementById('recipe-list');
 const recipeDetailEl = document.getElementById('recipe-detail');
 const rawOutput = document.getElementById('raw-output');
@@ -18,15 +13,15 @@ const noFavsEl = document.getElementById('no-favs');
 const clearFavsBtn = document.getElementById('clear-favs');
 const exportFavsBtn = document.getElementById('export-favs');
 
-// localStorage key
+// ----------------- State -----------------
+let selectedCuisine = 'any';
+let selectedLanguage = 'en';
 const LOCAL_KEY = 'spicesync_favorites_v1';
 
-// ----------------- Favorites utilities -----------------
+// ----------------- Favorites Utilities -----------------
 function recipeId(recipe) {
   const ingNames = JSON.stringify(
-    (recipe.ingredients || []).map(i =>
-      typeof i === 'string' ? i : (i.name || '')
-    )
+    (recipe.ingredients || []).map(i => typeof i === 'string' ? i : (i.name || ''))
   );
   return `${(recipe.title || '').trim()}|${ingNames}`;
 }
@@ -59,7 +54,7 @@ function addFavorite(recipe) {
   const favorites = loadFavorites();
   const id = recipeId(recipe);
   if (favorites.some(r => recipeId(r) === id)) return false;
-  const toSave = {
+  favorites.unshift({
     title: recipe.title || 'Untitled',
     servings: recipe.servings || null,
     time_minutes: recipe.time_minutes || null,
@@ -67,8 +62,7 @@ function addFavorite(recipe) {
     steps: recipe.steps || [],
     notes: recipe.notes || '',
     nutrition: recipe.nutrition || null
-  };
-  favorites.unshift(toSave);
+  });
   saveFavorites(favorites);
   renderFavoritesList();
   return true;
@@ -90,9 +84,7 @@ function clearFavorites() {
 
 function exportFavorites() {
   const favorites = loadFavorites();
-  const blob = new Blob([JSON.stringify(favorites, null, 2)], {
-    type: 'application/json'
-  });
+  const blob = new Blob([JSON.stringify(favorites, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -103,7 +95,7 @@ function exportFavorites() {
   URL.revokeObjectURL(url);
 }
 
-// ----------------- UI: favorites rendering -----------------
+// ----------------- UI: Favorites Rendering -----------------
 function updateFavoritesCount() {
   if (!favCountEl) return;
   const favorites = loadFavorites();
@@ -145,10 +137,7 @@ function renderFavoritesList() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    item.querySelector('.remove').addEventListener('click', () => {
-      removeFavorite(fav);
-    });
-
+    item.querySelector('.remove').addEventListener('click', () => removeFavorite(fav));
     favoritesListEl.appendChild(item);
   });
 }
@@ -159,12 +148,31 @@ function toggleFavoritesPanel() {
   renderFavoritesList();
 }
 
-// ----------------- API + rendering -----------------
+// ----------------- Option Cards -----------------
+function selectOptionCard(card) {
+  const type = card.dataset.type;
+  const value = card.dataset.value;
+  if (!type || !value) return;
+
+  // Deselect all in the group
+  document.querySelectorAll(`.option-card[data-type="${type}"]`).forEach(c => c.classList.remove('selected'));
+
+  // Select clicked
+  card.classList.add('selected');
+
+  // Update state
+  if (type === 'cuisine') selectedCuisine = value;
+  if (type === 'language') selectedLanguage = value;
+}
+
+// Attach click events to all option cards
+document.querySelectorAll('.option-card').forEach(card => {
+  card.addEventListener('click', () => selectOptionCard(card));
+});
+
+// ----------------- API + Rendering -----------------
 async function generateRecipe() {
   const ingredients = ingredientsInput.value.trim();
-  const cuisine = cuisineSelect.value || 'any';
-  const language = languageSelect.value || 'en';
-
   if (!ingredients) {
     alert('Please enter at least one ingredient');
     return;
@@ -177,7 +185,11 @@ async function generateRecipe() {
     const resp = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ingredients, cuisine, language })
+      body: JSON.stringify({
+        ingredients,
+        cuisine: selectedCuisine,
+        language: selectedLanguage
+      })
     });
 
     const json = await resp.json();
@@ -191,7 +203,6 @@ async function generateRecipe() {
 
     const recipes = json.recipes || [];
     rawOutput.style.display = 'none';
-
     recipeListEl.innerHTML = '';
     recipeDetailEl.innerHTML = '';
 
@@ -222,14 +233,11 @@ async function generateRecipe() {
   }
 }
 
+// ----------------- Show Recipe Detail -----------------
 function showRecipeDetail(recipe) {
-  const ingHtml = (recipe.ingredients || [])
-    .map(i =>
-      typeof i === 'string'
-        ? `<li>${i}</li>`
-        : `<li>${i.quantity ? i.quantity + ' ' : ''}${i.name || ''}</li>`
-    )
-    .join('');
+  const ingHtml = (recipe.ingredients || []).map(i =>
+    typeof i === 'string' ? `<li>${i}</li>` : `<li>${i.quantity ? i.quantity + ' ' : ''}${i.name || ''}</li>`
+  ).join('');
 
   const stepsHtml = (recipe.steps || []).map(s => `<li>${s}</li>`).join('');
   const favorited = isFavorited(recipe);
@@ -244,9 +252,7 @@ function showRecipeDetail(recipe) {
         </p>
       </div>
       <div>
-        <button id="fav-toggle-btn" class="btn ${
-          favorited ? 'danger' : 'primary'
-        }">
+        <button id="fav-toggle-btn" class="btn ${favorited ? 'danger' : 'primary'}">
           ${favorited ? 'Remove from favorites' : 'Save to favorites'}
         </button>
       </div>
@@ -263,7 +269,6 @@ function showRecipeDetail(recipe) {
 
   recipeDetailEl.innerHTML = html;
 
-  // Attach fav toggle
   const favBtn = document.getElementById('fav-toggle-btn');
   favBtn.addEventListener('click', () => {
     if (isFavorited(recipe)) {
@@ -279,19 +284,19 @@ function showRecipeDetail(recipe) {
     }
   });
 
-  // Nutrition
-  renderNutrition(recipe);
+  // Render nutrition if function exists
+  if (typeof renderNutrition === 'function') renderNutrition(recipe);
 
   recipeDetailEl.scrollIntoView({ behavior: 'smooth' });
   window.currentRecipe = recipe;
 }
 
-// ----------------- Event bindings -----------------
+// ----------------- Event Bindings -----------------
 generateBtn.addEventListener('click', generateRecipe);
 if (toggleFavsBtn) toggleFavsBtn.addEventListener('click', toggleFavoritesPanel);
 if (clearFavsBtn) clearFavsBtn.addEventListener('click', clearFavorites);
 if (exportFavsBtn) exportFavsBtn.addEventListener('click', exportFavorites);
 
-// Init
+// ----------------- Init -----------------
 updateFavoritesCount();
 renderFavoritesList();
