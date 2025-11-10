@@ -60,6 +60,12 @@
     <!-- Output Card -->
     <div id="output" class="card output">
       <h2>Generated Recipes</h2>
+
+      <div id="loader" class="loader hidden" aria-live="polite" role="status">
+  <img src="./assets/PusheenGif.gif" alt="Generating recipes..." />
+  <span class="visually-hidden">Generating recipes…</span>
+</div>
+
       <div id="recipe-list" class="recipe-list"></div>
       <div id="recipe-detail" class="recipe-detail"></div>
       <div id="nutrition" class="nutrition"></div>

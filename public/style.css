@@ -521,3 +521,124 @@ button:focus, input:focus, select:focus, a:focus { box-shadow: 0 0 0 4px rgba(17
   background-color: #f8f2e8;
   transform: translateY(-2px);
 }
+
+
+/* loader */
+.hidden { display: none !important; }
+
+/* container styling */
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  /* optional visual: make the loader stand out */
+  background: rgba(255,255,255,0.85);
+  border-radius: 8px;
+}
+
+/* size the gif */
+.loader img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+/* accessibility helper (screen-reader only text) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap; /* added for some browsers */
+}
+/* Favorites panel */
+.favorites-panel {
+  position: fixed;
+  top: 0;
+  right: -420px; /* hidden off-screen */
+  height: 100vh;
+  width: 380px;
+  max-width: 92%;
+  background: #fff;
+  box-shadow: -12px 0 30px rgba(0,0,0,0.12);
+  padding: 1rem;
+  z-index: 1001;
+  transition: right 260ms cubic-bezier(.2,.9,.2,1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* open state */
+.favorites-panel.open {
+  right: 0;
+}
+
+/* overlay behind panel */
+.favs-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.35);
+  transition: opacity 200ms;
+}
+
+/* hide utility */
+.hidden { display: none !important; }
+
+/* header row inside panel */
+.favorites-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+/* list items */
+.favorites-list {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* single favorite item */
+.favorite-item {
+  border-radius: 8px;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.03);
+  display:flex;
+  gap:0.5rem;
+  align-items:flex-start;
+}
+
+/* favorite item title (clickable to show detail) */
+.favorite-item .title {
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* footer */
+.favorites-footer {
+  display:flex;
+  justify-content:space-between;
+}
+
+/* small favourite button on recipe cards */
+.recipe-card .fav-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ensure recipe-card has position relative for fav absolute positioning */
+.recipe-card { position: relative; padding: 1rem; }
+
+

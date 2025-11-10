@@ -1,4 +1,8 @@
 // ----------------- DOM Elements -----------------
+
+const loaderEl = document.getElementById('loader');
+
+
 const generateBtn = document.getElementById('generate');
 const ingredientsInput = document.getElementById('ingredients');
 const recipeListEl = document.getElementById('recipe-list');
@@ -178,6 +182,11 @@ async function generateRecipe() {
     return;
   }
 
+  // grab loader element (make sure you have <div id="loader" class="loader hidden"> in your HTML)
+  const loaderEl = document.getElementById('loader');
+
+  // show loader + disable button
+  if (loaderEl) loaderEl.classList.remove('hidden');
   generateBtn.disabled = true;
   generateBtn.textContent = 'Generating...';
 
@@ -193,6 +202,7 @@ async function generateRecipe() {
     });
 
     const json = await resp.json();
+
     if (!resp.ok || !json.success) {
       console.error('API error', json);
       recipeListEl.innerHTML = `<p>Error: ${json?.error || 'unknown error'}</p>`;
@@ -215,10 +225,10 @@ async function generateRecipe() {
       const card = document.createElement('div');
       card.className = 'recipe-card';
       card.innerHTML = `
-        <h3>${recipe.title || 'Untitled recipe'}</h3>
+        <h3>${escapeHtml(recipe.title || 'Untitled recipe')}</h3>
         <p>
-          ${recipe.time_minutes ? recipe.time_minutes + ' mins • ' : ''}
-          ${recipe.servings ? recipe.servings + ' servings' : ''}
+          ${recipe.time_minutes ? escapeHtml(String(recipe.time_minutes)) + ' mins • ' : ''}
+          ${recipe.servings ? escapeHtml(String(recipe.servings)) + ' servings' : ''}
         </p>
       `;
       card.addEventListener('click', () => showRecipeDetail(recipe));
@@ -226,11 +236,24 @@ async function generateRecipe() {
     });
   } catch (err) {
     console.error('Network error', err);
-    recipeListEl.innerHTML = `<p>Network error: ${err.message}</p>`;
+    recipeListEl.innerHTML = `<p>Network error: ${escapeHtml(err.message || 'Unknown error')}</p>`;
   } finally {
+    // hide loader + re-enable button
+    if (loaderEl) loaderEl.classList.add('hidden');
     generateBtn.disabled = false;
     generateBtn.textContent = 'Generate Recipes';
   }
+
+  
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 // ----------------- Show Recipe Detail -----------------
