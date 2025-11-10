@@ -15,11 +15,24 @@
   <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/favorites.css" />
   <link rel="stylesheet" href="css/utilities.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+
 </head>
 
 <body>
+  <nav class="navbar">
+    <div class="nav-content">
+      <a href="index.html" class="nav-logo">SpiceSync</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html" >About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
   <main class="container">
-    <h1>SpiceSync — AI Recipe Generator</h1>
+    
     <p>Enter ingredients, select a cuisine and language, then generate recipes.</p>
 
     <!-- Input Card -->
@@ -71,8 +84,10 @@
       </div>
 
       <div id="recipe-list" class="recipe-list"></div>
-      <div id="recipe-detail" class="recipe-detail"></div>
-      <div id="nutrition" class="nutrition"></div>
+      <div class="recipe-detail-nutrition-container">
+  <div id="recipe-detail" class="recipe-detail"></div>
+  <div id="nutrition" class="nutrition"></div>
+</div>
       <pre id="raw-output" class="hidden" style="white-space:pre-wrap"></pre>
     </div>
 

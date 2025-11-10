@@ -78,15 +78,23 @@ input:focus, select:focus, textarea:focus {
 .recipe-detail {
   background: linear-gradient(180deg, #fffdf6, #f7efe0);
   border-radius: 12px;
-  padding: 20px;
+  padding: 1.5rem;
   border: 1px solid rgba(80,60,46,0.06);
   min-height: 320px;
   box-shadow: 0 20px 40px rgba(23,18,14,0.06);
+    box-sizing: border-box;
+
 }
 .recipe-detail h2 { margin-top: 0; font-family:"Merriweather",serif; color:var(--ink); font-size:1.4rem; }
 .recipe-detail .muted { color:var(--muted); margin:6px 0 12px 0; }
 .recipe-detail ul, .recipe-detail ol { margin-left:18px; color:var(--ink); }
 .recipe-detail li { margin-bottom:8px; }
+
+.recipe-detail, .nutrition {
+  width: 90%;
+  max-width: 800px;
+  margin: 1rem 0;
+}
 
 /* recipe cards */
 .recipe-card {

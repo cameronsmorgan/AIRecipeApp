@@ -34,14 +34,93 @@
   opacity:0.9;
 }
 
-/* output area */
+/* Output area */
 .output {
   display: grid;
-  gap: var(--gap);
-  grid-template-columns: 320px 1fr;
-  align-items: start;
+  grid-template-rows: auto auto 1fr;
+  gap: 1.5rem;
+  justify-items: center;
+  width: 100%;
 }
 
+/* Heading */
+.output h2 {
+  text-align: center;
+  width: 100%;
+}
+
+/* Loader */
+#loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+/* Recipe list */
+.recipe-list {
+  display: flex;
+  flex-wrap: wrap;           /* Wrap cards on smaller screens */
+  justify-content: center;   /* Center horizontally */
+  gap: 1rem;                 /* Space between cards */
+  width: 100%;
+}
+
+.recipe-card {
+  background: #fffdf6;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(23, 18, 14, 0.06);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex: 1 1 200px;           /* Flex-grow, shrink, and base width */
+  max-width: 250px;          /* Ensure cards don’t get too wide */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.recipe-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(23, 18, 14, 0.1);
+}
+
+/* Card title */
+.recipe-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-family: "Merriweather", serif;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+/* Card content */
+.recipe-card p {
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin: 0.25rem 0;
+  text-align: center;
+}
+
+/* Favorite button in top-right */
+.recipe-card .fav-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Make cards responsive */
+@media (max-width: 600px) {
+  .recipe-card {
+    flex: 1 1 100%; /* stack cards on small screens */
+    max-width: none;
+  }
+}
 /* responsive */
 @media (max-width: 920px) {
   .output { grid-template-columns: 1fr; }
