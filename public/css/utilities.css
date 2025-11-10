@@ -1,0 +1,28 @@
+.hidden { display: none !important; }
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+pre {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #3b2414;
+  background: rgba(255,250,240,0.6);
+  padding: 12px;
+  border-radius: 8px;
+  overflow: auto;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+/* keyboard focus */
+:focus { outline: none; }
+button:focus, input:focus, select:focus, a:focus { box-shadow: 0 0 0 4px rgba(179,85,27,0.06); }
+
+/* print */
+@media print {
+  body { background: #fff; color: #000; }
+  .card, .output { box-shadow: none; border: none; }
+}

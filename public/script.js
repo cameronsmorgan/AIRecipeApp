@@ -123,22 +123,23 @@ function renderFavoritesList() {
     const item = document.createElement('div');
     item.className = 'favorite-item';
     item.innerHTML = `
-      <div>
+      <div class="favorite-info">
         <div class="favorite-title">${fav.title}</div>
         <div class="favorite-meta">
-          ${fav.time_minutes ? fav.time_minutes + ' mins • ' : ''}
-          ${fav.servings ? fav.servings + ' servings' : ''}
+          ${fav.time_minutes ? fav.time_minutes + ' mins • ' : ''}${fav.servings ? fav.servings + ' servings' : ''}
         </div>
       </div>
-      <div style="display:flex;gap:6px;align-items:center">
+      <div class="favorite-actions">
         <button class="btn view">View</button>
         <button class="btn danger remove">Remove</button>
       </div>
     `;
 
     item.querySelector('.view').addEventListener('click', () => {
+      // Inject into main recipe detail area
       showRecipeDetail(fav);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Close the panel when a recipe is selected
+      favoritesPanel.classList.remove('open');
     });
 
     item.querySelector('.remove').addEventListener('click', () => removeFavorite(fav));
@@ -148,8 +149,11 @@ function renderFavoritesList() {
 
 function toggleFavoritesPanel() {
   if (!favoritesPanel) return;
-  favoritesPanel.classList.toggle('hidden');
-  renderFavoritesList();
+  const isOpen = favoritesPanel.classList.toggle('open');
+  if (isOpen) {
+    renderFavoritesList();
+    //document.body.classList.add('no-scroll');
+  } 
 }
 
 // ----------------- Option Cards -----------------

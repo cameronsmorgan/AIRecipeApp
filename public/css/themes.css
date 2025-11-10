@@ -1,0 +1,13 @@
+:root{
+  --parchment: #f6efe6;
+  --paper-2:  #efe6d9;
+  --ink:      #2b251f;
+  --muted:    #6b5b4a;
+  --accent:   #b3551b;
+  --accent-2: #d99a67;
+  --stitch:   rgba(43,37,31,0.08);
+  --shadow:   0 10px 30px rgba(23,18,14,0.15);
+  --card-radius: 12px;
+  --maxw: 1100px;
+  --gap: 16px;
+}

@@ -8,9 +8,15 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Modular CSS (load order matters) -->
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/favorites.css" />
+  <link rel="stylesheet" href="css/utilities.css" />
 </head>
+
 <body>
   <main class="container">
     <h1>SpiceSync — AI Recipe Generator</h1>
@@ -35,8 +41,6 @@
         <div class="option-card" data-type="cuisine" data-value="Tsonga">Tsonga</div>
         <div class="option-card" data-type="cuisine" data-value="Tswana">Tswana</div>
         <div class="option-card" data-type="cuisine" data-value="Swazi">Swazi</div>
-
-
         <div class="option-card selected" data-type="cuisine" data-value="any">Any</div>
       </div>
 
@@ -46,12 +50,12 @@
         <div class="option-card" data-type="language" data-value="zu">Zulu</div>
         <div class="option-card" data-type="language" data-value="xh">Xhosa</div>
         <div class="option-card" data-type="language" data-value="af">Afrikaans</div>
-        <div class="option-card selected" data-type="language" data-value="st">Sotho</div>
-        <div class="option-card" data-type="language" data-value="za">Venda</div>
-        <div class="option-card" data-type="language" data-value="za">Pedi</div>
-        <div class="option-card" data-type="language" data-value="af">Tsonga</div>
-        <div class="option-card selected" data-type="language" data-value="en">Tswana</div>
-        <div class="option-card" data-type="language" data-value="zu">Swazi</div>
+        <div class="option-card" data-type="language" data-value="st">Sotho</div>
+        <div class="option-card" data-type="language" data-value="ve">Venda</div>
+        <div class="option-card" data-type="language" data-value="nso">Pedi</div>
+        <div class="option-card" data-type="language" data-value="ts">Tsonga</div>
+        <div class="option-card" data-type="language" data-value="tn">Tswana</div>
+        <div class="option-card" data-type="language" data-value="ss">Swazi</div>
       </div>
 
       <button id="generate" class="btn primary">Generate Recipes</button>
@@ -62,34 +66,45 @@
       <h2>Generated Recipes</h2>
 
       <div id="loader" class="loader hidden" aria-live="polite" role="status">
-  <img src="./assets/PusheenGif.gif" alt="Generating recipes..." />
-  <span class="visually-hidden">Generating recipes…</span>
-</div>
+        <img src="./assets/PusheenGif.gif" alt="Generating recipes..." />
+        <span class="visually-hidden">Generating recipes…</span>
+      </div>
 
       <div id="recipe-list" class="recipe-list"></div>
       <div id="recipe-detail" class="recipe-detail"></div>
       <div id="nutrition" class="nutrition"></div>
-      <pre id="raw-output" style="display:none; white-space:pre-wrap"></pre>
+      <pre id="raw-output" class="hidden" style="white-space:pre-wrap"></pre>
     </div>
 
-    <!-- Favorites Card -->
-    <div class="card favorites">
-      <button id="toggle-favorites" class="btn">Show Favorites (<span id="fav-count">0</span>)</button>
+    <!-- Favorites Side Panel -->
+<div id="favorites-panel" class="favorites-panel ">
+  <div class="favorites-header">
+    <h2>My Favorite Recipes</h2>
+    <button id="close-favorites" class="btn small">✖</button>
+  </div>
+  <div id="no-favs">No favorites saved yet.</div>
+  <div id="favorites-list"></div>
+  <div class="favorites-actions">
+    <button id="clear-favs" class="btn danger">Clear All</button>
+    <button id="export-favs" class="btn primary">Export</button>
+  </div>
+</div>
 
-      <div id="favorites-panel" class="hidden">
-        <h2>My Favorite Recipes</h2>
-        <div id="no-favs">No favorites saved yet.</div>
-        <div id="favorites-list"></div>
-        <div style="margin-top:1rem; display:flex; gap:1rem;">
-          <button id="clear-favs" class="btn danger">Clear All</button>
-          <button id="export-favs" class="btn">Export</button>
-        </div>
-      </div>
-    </div>
+<!-- Floating Toggle Button -->
+<button id="toggle-favorites" class="btn floating-fav-btn">❤️ Favorites (<span id="fav-count">0</span>)</button>
   </main>
 
-  <!-- Scripts -->
-  <script src="script.js"></script>
-  <script src="nutrition.js"></script>
+  <!-- Scripts
+       - nutrition.js remains a regular script (exposes renderNutrition globally if implemented)
+       - main.js is the module entry that imports other front-end modules
+  -->
+  <script src="js/nutrition.js"></script>
+  <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/api.js"></script>
+  <script type="module" src="js/favorites.js"></script>
+  <script type="module" src="js/options.js"></script>
+  <script type="module" src="js/recipeDetail.js"></script>
+  <script type="module" src="js/utils.js"></script>
+
 </body>
 </html>

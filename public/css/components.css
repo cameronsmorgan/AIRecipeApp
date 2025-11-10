@@ -1,0 +1,125 @@
+/* labels & inputs */
+label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 10px;
+  font-family: "Patrick Hand", "Merriweather", serif;
+}
+input[type="text"], select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(80,60,46,0.06);
+  background: linear-gradient(180deg, #fffdfa, #fbf6ee);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+input::placeholder { color: rgba(107,91,74,0.36); font-style: italic; }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(179,85,27,0.06);
+  border-color: rgba(179,85,27,0.24);
+}
+
+/* buttons */
+.btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+.btn.primary { background-color: #bfae8a; color: #fff; }
+.btn.primary:hover { background-color: #a68d6e; }
+.btn.danger { background-color: #d35b5b; color: #fff; }
+.btn.danger:hover { background-color: #b94444; }
+
+/* option cards */
+.options-grid { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:1.5rem; }
+.option-card {
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #bfae8a;
+  background-color: #fff8f0;
+  cursor: pointer;
+  text-align: center;
+  min-width: 120px;
+  flex: 1 1 auto;
+  transition: all 0.2s ease;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+.option-card:hover { background-color: #f3e6d7; transform: translateY(-2px); }
+.option-card.selected {
+  background-color: #d9b382;
+  color: #fff;
+  border-color: #c79b66;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* ingredients input */
+#ingredients {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #d8c8aa;
+  border-radius: 6px;
+  background-color: #faf7f0;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+#ingredients:focus { outline: none; border-color: #b68a4a; background-color: #fff8ed; }
+
+/* recipe-detail */
+.recipe-detail {
+  background: linear-gradient(180deg, #fffdf6, #f7efe0);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(80,60,46,0.06);
+  min-height: 320px;
+  box-shadow: 0 20px 40px rgba(23,18,14,0.06);
+}
+.recipe-detail h2 { margin-top: 0; font-family:"Merriweather",serif; color:var(--ink); font-size:1.4rem; }
+.recipe-detail .muted { color:var(--muted); margin:6px 0 12px 0; }
+.recipe-detail ul, .recipe-detail ol { margin-left:18px; color:var(--ink); }
+.recipe-detail li { margin-bottom:8px; }
+
+/* recipe cards */
+.recipe-card {
+  background: #fffdf6;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  box-shadow: 1px 2px 6px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+  position: relative;
+}
+.recipe-card:hover { background-color: #f8f2e8; transform: translateY(-2px); }
+.recipe-card::after {
+  content:'';
+  display:block;
+  height:6px;
+  margin-top:8px;
+  border-radius:4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  opacity:0;
+  transition:opacity .18s;
+}
+.recipe-card:hover::after { opacity:1; }
+
+/* fav button on card */
+.recipe-card .fav-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}

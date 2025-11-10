@@ -1,0 +1,57 @@
+/* Card baseline */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: var(--card-radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+/* decorative stitched corner + paper fold (keeps earlier flair) */
+.card::before{
+  content:'';
+  position:absolute;
+  left:12px;
+  top:12px;
+  width:44px;
+  height:14px;
+  border-radius:6px;
+  background: repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0 4px, rgba(255,255,255,0.02) 4px 8px);
+  transform: rotate(-6deg);
+  opacity:0.9;
+}
+.card::after{
+  content:'';
+  position:absolute;
+  right:12px;
+  top:8px;
+  width:36px;
+  height:36px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(255,255,255,0.02));
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  transform: rotate(20deg);
+  opacity:0.9;
+}
+
+/* output area */
+.output {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: 320px 1fr;
+  align-items: start;
+}
+
+/* responsive */
+@media (max-width: 920px) {
+  .output { grid-template-columns: 1fr; }
+  .recipe-list { max-height: 260px; display:flex; flex-wrap:wrap; flex-direction:row; }
+  .recipe-card { width: calc(50% - 8px); }
+  .recipe-detail { margin-top: 12px; }
+}
+@media (max-width: 520px) {
+  body { padding: 12px; }
+  .recipe-card { width: 100%; }
+  .container h1 { font-size: 1.4rem; }
+  .recipe-detail h2 { font-size: 1.1rem; }
+}

@@ -1,3 +1,8 @@
+/* style.css — Rustic SpiceSync theme
+   Replace your existing style.css with this file.
+*/
+
+/* ---------- Theme variables (rustic) ---------- */
 :root{
   --parchment: #f6efe6;        /* paper background */
   --paper-2:  #efe6d9;         /* inner card */
@@ -16,14 +21,15 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin: 0;
+ margin: 0;
   font-family: "Merriweather", serif;
   color: var(--ink, #3b2f2f);
   /* visible handmade paper tile + warm base color */
-  background-color: #f3e2c0;
+  background-color: #f3e2c0; /* warm parchment base */
   background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
   background-repeat: repeat;
   background-size: 260px 260px;
+  /* blend a subtle overlay to warm the tones */
   background-blend-mode: multiply;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
@@ -36,6 +42,7 @@ body::after {
   pointer-events: none;
   position: fixed;
   inset: 0;
+  /* center stays bright, edges get darker */
   background: radial-gradient(60% 60% at 50% 45%,
     rgba(255,245,230,0.00) 0%,
     rgba(0,0,0,0.06) 60%,
@@ -46,7 +53,7 @@ body::after {
 
 /* subtle paper texture using a faint diagonal gradient */
 body::before{
-  content: "";
+   content: "";
   pointer-events: none;
   position: fixed;
   inset: 0;
@@ -78,17 +85,18 @@ body::before{
 }
 .container p{margin:0 0 12px;color:var(--muted);font-style:italic;}
 
-/* ---------- Card visuals (single authoritative .card) ---------- */
-/* Keep latest .card definition as requested; preserve decorative pseudo-elements */
-.card {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+/* ---------- Rustic card base ---------- */
+.card{
+  background: linear-gradient(180deg, var(--paper-2), #efe6d4);
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(91,74,59,0.08);
+  position: relative;
+  overflow: visible;
 }
 
-/* decorative stitched corner (unique) */
+/* stitched top-left corner (visual flourish) */
 .card::before{
   content:'';
   position:absolute;
@@ -147,7 +155,326 @@ input:focus, select:focus, textarea:focus {
   border-color: rgba(179,85,27,0.24);
 }
 
-/* ---------- Buttons (keep latest .btn and .btn.primary/.danger) ---------- */
+/* ---------- Buttons (stamp style) ---------- */
+.btn {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:8px;
+  border: 1px solid rgba(0,0,0,0.06);
+  cursor:pointer;
+  background: #fff8f0;
+  color: var(--ink);
+  font-weight:700;
+  box-shadow: 0 6px 18px rgba(27,18,10,0.08);
+  transition: transform .08s, box-shadow .12s;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  font-size:0.85rem;
+}
+.btn:active{ transform: translateY(1px); }
+.btn.primary {
+  background: linear-gradient(180deg, #ffd6b8, #f7b27c);
+  border: 1px solid rgba(179,85,27,0.18);
+  color: #3b2414;
+  box-shadow: 0 10px 22px rgba(179,85,27,0.12);
+}
+.btn.ghost {
+  background: transparent;
+  border: 1px dashed rgba(90,70,51,0.12);
+  color: var(--muted);
+}
+.btn.danger {
+  background: linear-gradient(180deg,#f7c6c6,#f28a8a);
+  color: #3b1414;
+}
+
+/* ---------- Layout specifics ---------- */
+.card .form-actions {
+  display:flex;
+  gap:12px;
+  margin-top:14px;
+}
+
+/* output area */
+.output {
+  display:grid;
+  gap: var(--gap);
+  grid-template-columns: 320px 1fr;
+  align-items:start;
+}
+
+/* recipe list */
+.recipe-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-height: 60vh;
+  overflow:auto;
+  padding-right:6px;
+}
+
+/* recipe card (old-style index card) */
+.recipe-card {
+  background: linear-gradient(180deg,#fffdfa,#f6efe6);
+  border-radius:8px;
+  padding:12px;
+  border:1px solid rgba(80,60,46,0.06);
+  box-shadow: 0 8px 18px rgba(23,18,14,0.06);
+  cursor:pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+  display:flex;
+  flex-direction:column;
+}
+.recipe-card h3 { margin:0; font-size:1rem; color:var(--ink); font-weight:700; font-family:"Merriweather",serif }
+.recipe-card p { margin:6px 0 0 0; color:var(--muted); font-size:.9rem }
+.recipe-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(23,18,14,0.12) }
+
+/* tiny paper label on recipe card */
+.recipe-card .label {
+  display:inline-block;
+  font-family:"Patrick Hand", serif;
+  font-size:0.78rem;
+  color:var(--muted);
+  background:rgba(255,255,255,0.6);
+  padding:2px 6px;
+  border-radius:6px;
+  border:1px solid rgba(0,0,0,0.03);
+  margin-top:8px;
+}
+
+/* detail panel looks like an open recipe page */
+.recipe-detail{
+  background: linear-gradient(180deg, #fffdf6, #f7efe0);
+  border-radius:12px;
+  padding:20px;
+  border:1px solid rgba(80,60,46,0.06);
+  min-height: 320px;
+  box-shadow: 0 20px 40px rgba(23,18,14,0.06);
+}
+.recipe-detail h2 { margin-top:0; font-family:"Merriweather",serif; color:var(--ink); font-size:1.4rem; }
+.recipe-detail .muted { color:var(--muted); margin:6px 0 12px 0; }
+
+/* ingredients & steps */
+.recipe-detail ul, .recipe-detail ol {
+  margin-left:18px;
+  color:var(--ink);
+}
+.recipe-detail li { margin-bottom:8px; }
+
+/* favorite button style inside detail */
+#fav-toggle-btn {
+  padding:8px 12px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.06);
+  background: linear-gradient(180deg,#fff6ef,#ffe7cc);
+  color: var(--ink);
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* small handwritten notes (Patrick Hand) */
+.note {
+  font-family:"Patrick Hand", "Merriweather", serif;
+  color:var(--muted);
+  font-size:0.95rem;
+  background: rgba(255,255,255,0.6);
+  padding:8px 10px;
+  border-radius:8px;
+  display:inline-block;
+  border:1px solid rgba(0,0,0,0.03);
+}
+
+/* favorites panel */
+#favorites-panel.hidden { display:none; }
+.favorites-list { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+
+/* raw debug output style */
+pre { font-family:monospace; font-size:0.9rem; color:#3b2414; background: rgba(255,250,240,0.6); padding:12px; border-radius:8px; overflow:auto; border:1px solid rgba(0,0,0,0.03); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 920px){
+  .output { grid-template-columns: 1fr; }
+  .recipe-list { max-height: 260px; display:flex; flex-wrap:wrap; flex-direction:row; }
+  .recipe-card { width: calc(50% - 8px); }
+  .recipe-detail { margin-top:12px; }
+}
+@media (max-width: 520px){
+  body{padding:12px}
+  .recipe-card { width:100% }
+  .container h1 { font-size:1.4rem }
+  .recipe-detail h2 { font-size:1.1rem }
+}
+
+/* ---------- small interactions ---------- */
+button[disabled] { opacity:0.6; cursor:wait; transform:none; }
+.recipe-card::after{
+  content:'';
+  display:block;
+  height:6px;
+  margin-top:8px;
+  border-radius:4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  opacity:0;
+  transition:opacity .18s;
+}
+.recipe-card:hover::after { opacity:1 }
+
+/* keyboard focus */
+:focus{ outline:none; }
+button:focus, input:focus, select:focus, a:focus { box-shadow: 0 0 0 4px rgba(179,85,27,0.06); }
+
+/* print */
+@media print {
+  body{background:#fff;color:#000}
+  .card, .output { box-shadow:none; border: none; }
+}
+
+
+/* ---------- Option card grid & ingredient styling ---------- */
+
+/* group label slightly handwritten */
+.group-label {
+  display:block;
+  margin-top:14px;
+  margin-bottom:6px;
+  font-family: "Patrick Hand", "Merriweather", serif;
+  color: var(--muted);
+  font-size:0.95rem;
+}
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+/* ingredient input — bigger, pill-like */
+#ingredients {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #d8c8aa;
+  border-radius: 6px;
+  background-color: #faf7f0;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+#ingredients:focus {
+  outline: none;
+  border-color: #b68a4a;
+  background-color: #fff8ed;
+}
+
+/* option grid */
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+/* option card base */
+.option-card {
+  padding: 0.8rem 1rem;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #f8f4ec;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.option-card:hover {
+    background-color: #ede3d5;
+
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(23,18,14,0.08);
+}
+
+/* selected state */
+.option-card.selected {
+  background-color: #d3b48c;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* focus-visible for keyboard users */
+.option-card:focus {
+  outline:none;
+  box-shadow: 0 0 0 6px rgba(179,85,27,0.06);
+}
+
+/* Clear button (small) */
+#clear-ingredients {
+  background: transparent;
+  border: 1px dashed rgba(80,60,46,0.08);
+  color: var(--muted);
+  padding:8px 10px;
+}
+
+/* small responsive tweaks */
+@media (max-width: 520px) {
+  .option-card { flex: 1 1 calc(50% - 8px); text-align:center; padding:10px; }
+  #ingredients { padding:12px; }
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+/* ---------------- Inputs ---------------- */
+.input-card input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ---------------- Option Cards (Cuisine / Language) ---------------- */
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; /* spacing between cards */
+  margin-bottom: 1.5rem;
+}
+
+.option-card {
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #bfae8a;
+  background-color: #fff8f0;
+  cursor: pointer;
+  text-align: center;
+  min-width: 120px;
+  flex: 1 1 auto;
+  
+  transition: all 0.2s ease;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+
+.option-card:hover {
+  background-color: #f3e6d7;
+  transform: translateY(-2px);
+}
+
+.option-card.selected {
+  background-color: #d9b382;
+  color: #fff;
+  border-color: #c79b66;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* ---------------- Buttons ---------------- */
 .btn {
   padding: 0.7rem 1.5rem;
   border-radius: 8px;
@@ -175,94 +502,6 @@ input:focus, select:focus, textarea:focus {
   background-color: #b94444;
 }
 
-.btn.primary { /* explicit backup for any earlier usage relying on .btn.primary styles */
-  color: #fff;
-}
-
-/* ---------- Layout specifics ---------- */
-.card .form-actions {
-  display:flex;
-  gap:12px;
-  margin-top:14px;
-}
-
-/* output area */
-.output {
-  display:grid;
-  gap: var(--gap);
-  grid-template-columns: 320px 1fr;
-  align-items:start;
-}
-
-/* detail panel looks like an open recipe page */
-.recipe-detail{
-  background: linear-gradient(180deg, #fffdf6, #f7efe0);
-  border-radius:12px;
-  padding:20px;
-  border:1px solid rgba(80,60,46,0.06);
-  min-height: 320px;
-  box-shadow: 0 20px 40px rgba(23,18,14,0.06);
-}
-.recipe-detail h2 { margin-top:0; font-family:"Merriweather",serif; color:var(--ink); font-size:1.4rem; }
-.recipe-detail .muted { color:var(--muted); margin:6px 0 12px 0; }
-
-/* ingredients & steps */
-.recipe-detail ul, .recipe-detail ol {
-  margin-left:18px;
-  color:var(--ink);
-}
-.recipe-detail li { margin-bottom:8px; }
-
-/* ---------- Option card grid & ingredient styling ---------- */
-.options-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px; /* spacing between cards */
-  margin-bottom: 1.5rem;
-}
-
-.option-card {
-  padding: 0.6rem 1rem;
-  border-radius: 10px;
-  border: 1px solid #bfae8a;
-  background-color: #fff8f0;
-  cursor: pointer;
-  text-align: center;
-  min-width: 120px;
-  flex: 1 1 auto;
-  transition: all 0.2s ease;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
-}
-
-.option-card:hover {
-  background-color: #f3e6d7;
-  transform: translateY(-2px);
-}
-
-.option-card.selected {
-  background-color: #d9b382;
-  color: #fff;
-  border-color: #c79b66;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-/* ingredient input — bigger, pill-like */
-#ingredients {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #d8c8aa;
-  border-radius: 6px;
-  background-color: #faf7f0;
-  font-family: 'Lato', sans-serif;
-  font-size: 0.95rem;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-}
-#ingredients:focus {
-  outline: none;
-  border-color: #b68a4a;
-  background-color: #fff8ed;
-}
-
 /* ---------------- Recipe List ---------------- */
 .recipe-list, .recipe-detail {
   margin-top: 1rem;
@@ -276,36 +515,30 @@ input:focus, select:focus, textarea:focus {
   cursor: pointer;
   box-shadow: 1px 2px 6px rgba(0,0,0,0.08);
   transition: all 0.2s ease;
-  position: relative;
 }
+
 .recipe-card:hover {
   background-color: #f8f2e8;
   transform: translateY(-2px);
 }
 
-/* visual accent bar on hover (keeps the earlier decorative rule) */
-.recipe-card::after{
-  content:'';
-  display:block;
-  height:6px;
-  margin-top:8px;
-  border-radius:4px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  opacity:0;
-  transition:opacity .18s;
-}
-.recipe-card:hover::after { opacity:1 }
 
 /* loader */
+.hidden { display: none !important; }
+
+/* container styling */
 .loader {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
   padding: 1rem 0;
+  /* optional visual: make the loader stand out */
   background: rgba(255,255,255,0.85);
   border-radius: 8px;
 }
+
+/* size the gif */
 .loader img {
   width: 64px;
   height: 64px;
@@ -318,10 +551,9 @@ input:focus, select:focus, textarea:focus {
   height: 1px; width: 1px;
   overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px);
-  white-space: nowrap;
+  white-space: nowrap; /* added for some browsers */
 }
-
-/* Favorites panel (single authoritative set) */
+/* Favorites panel */
 .favorites-panel {
   position: fixed;
   top: 0;
@@ -353,6 +585,9 @@ input:focus, select:focus, textarea:focus {
   transition: opacity 200ms;
 }
 
+/* hide utility */
+.hidden { display: none !important; }
+
 /* header row inside panel */
 .favorites-header {
   display:flex;
@@ -360,7 +595,7 @@ input:focus, select:focus, textarea:focus {
   justify-content:space-between;
 }
 
-/* list items inside panel */
+/* list items */
 .favorites-list {
   overflow-y: auto;
   flex: 1 1 auto;
@@ -403,36 +638,104 @@ input:focus, select:focus, textarea:focus {
   line-height: 1;
 }
 
-/* raw debug output style */
-pre { font-family:monospace; font-size:0.9rem; color:#3b2414; background: rgba(255,250,240,0.6); padding:12px; border-radius:8px; overflow:auto; border:1px solid rgba(0,0,0,0.03); }
+/* ensure recipe-card has position relative for fav absolute positioning */
+.recipe-card { position: relative; padding: 1rem; }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 920px){
-  .output { grid-template-columns: 1fr; }
-  .recipe-list { max-height: 260px; display:flex; flex-wrap:wrap; flex-direction:row; }
-  .recipe-card { width: calc(50% - 8px); }
-  .recipe-detail { margin-top:12px; }
+#favorites-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 340px;
+  max-width: 90vw;
+  background: linear-gradient(180deg, #fffdf6, #f7efe0);
+  box-shadow: -6px 0 18px rgba(0,0,0,0.15);
+  border-left: 1px solid rgba(0,0,0,0.08);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  padding: 1.5rem;
+  z-index: 2000;
+  overflow-y: auto;
 }
-@media (max-width: 520px){
-  body{padding:12px}
-  .recipe-card { width:100% }
-  .container h1 { font-size:1.4rem }
-  .recipe-detail h2 { font-size:1.1rem }
-  .option-card { flex: 1 1 calc(50% - 8px); text-align:center; padding:10px; }
-  #ingredients { padding:12px; }
-}
 
-/* utility hide */
-.hidden { display: none !important; }
-
-/* keyboard focus */
-:focus{ outline:none; }
-button:focus, input:focus, select:focus, a:focus { box-shadow: 0 0 0 4px rgba(179,85,27,0.06); }
-
-/* print */
-@media print {
-  body{background:#fff;color:#000}
-  .card, .output { box-shadow:none; border: none; }
+#favorites-panel.open {
+  transform: translateX(0);
 }
 
 
+
+/* Button to toggle panel */
+#toggle-favorites {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2100;
+  background: linear-gradient(180deg, #ffd6b8, #f7b27c);
+  border: 1px solid rgba(179,85,27,0.2);
+  color: #3b2414;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  font-weight: 700;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#toggle-favorites:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Inside the panel */
+#favorites-panel h2 {
+  margin-top: 0;
+  font-family: "Merriweather", serif;
+  color: var(--ink);
+}
+
+.favorite-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.7);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.favorite-item:hover {
+  background: rgba(255,255,255,0.9);
+}
+
+.favorite-info {
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.favorite-title {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.favorite-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.favorite-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.btn.view {
+  background: linear-gradient(180deg, #ffd6b8, #f7b27c);
+  color: #3b2414;
+}
+
+#no-favs {
+  color: var(--muted);
+  text-align: center;
+  margin-top: 1rem;
+  font-style: italic;
+}
