@@ -9,23 +9,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <!-- Modular CSS (load order matters) -->
-  <link rel="stylesheet" href="../public/css/themes.css" />
-  <link rel="stylesheet" href="../public/css/base.css" />
-  <link rel="stylesheet" href="../public/css/layout.css" />
-  <link rel="stylesheet" href="../public/css/components.css" />
-  <link rel="stylesheet" href="../public/css/favorites.css" />
-  <link rel="stylesheet" href="../public/css/utilities.css" />
-  <link rel="stylesheet" href="../public/css/navbar.css" />
+<link rel="stylesheet" href="/css/base.css" />
+<link rel="stylesheet" href="/css/themes.css" />
+<link rel="stylesheet" href="/css/layout.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/favorites.css" />
+<link rel="stylesheet" href="/css/utilities.css" />
+<link rel="stylesheet" href="/css/navbar.css" />
 
 </head>
 
 <body>
   <nav class="navbar">
     <div class="nav-content">
-      <a href="../public/index.html" class="nav-logo">SpiceSync</a>
+      <a href="index.html" class="nav-logo">SpiceSync</a>
       <ul class="nav-links">
-        <li><a href="../public/index.html" class="active">Home</a></li>
-        <li><a href="../public/about.html" >About</a></li>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html" >About</a></li>
       </ul>
     </div>
   </nav>
@@ -84,7 +84,7 @@
       <h2>Generated Recipes</h2>
 
       <div id="loader" class="loader hidden" aria-live="polite" role="status">
-        <img src="../public/assets/PusheenGif.gif" alt="Generating recipes..." />
+        <img src="/assets/PusheenGif.gif" alt="Generating recipes..." />
         <span class="visually-hidden">Generating recipes…</span>
       </div>
 
@@ -117,13 +117,13 @@
        - nutrition.js remains a regular script (exposes renderNutrition globally if implemented)
        - main.js is the module entry that imports other front-end modules
   -->
-  <script src="../public/js/nutrition.js"></script>
-  <script type="module" src="../public/js/main.js"></script>
-    <script type="module" src="../public/js/api.js"></script>
-  <script type="module" src="../public/js/favorites.js"></script>
-  <script type="module" src="../public/js/options.js"></script>
-  <script type="module" src="../public/js/recipeDetail.js"></script>
-  <script type="module" src="../public/js/utils.js"></script>
+  <script src="/js/nutrition.js"></script>
+<script type="module" src="/js/main.js"></script>
+<script type="module" src="/js/api.js"></script>
+<script type="module" src="/js/favorites.js"></script>
+<script type="module" src="/js/options.js"></script>
+<script type="module" src="/js/recipeDetail.js"></script>
+<script type="module" src="/js/utils.js"></script>
 
 </body>
 </html>
