@@ -12,23 +12,10 @@ function escapeHtml(str) {
 }
 
 // Optional: simple translation map (example, extend as needed)
-const languageMap = {
-  en: text => text,
-  af: text => `Afrikaans: ${text}`,   // Placeholder for demo
-  zu: text => `Zulu: ${text}`,
-  xh: text => `Xhosa: ${text}`,
-  st: text => `Sotho: ${text}`,
-  ve: text => `Venda: ${text}`,
-  nso: text => `Pedi: ${text}`,
-  ts: text => `Tsonga: ${text}`,
-  tn: text => `Tswana: ${text}`,
-  ss: text => `Swazi: ${text}`
-};
+
 
 // Translate text based on selected language
 function translate(text) {
-  const lang = getSelectedLanguage();
-  if (languageMap[lang]) return languageMap[lang](text);
   return text;
 }
 

@@ -34,13 +34,13 @@ body::after {
 body::before {
  top: 80px;
    left: 0;
-  background-image: url("/public/assets/ornateBorder2-removebg-preview.png");
+  background-image: url("../assets/ornateBorder2-removebg-preview.png");
 }
 
 body::after {
    top: 80px;
   right: 0;
-  background-image: url("/public/assets/ornateBorder3-removebg-preview.png");
+  background-image: url("../assets/ornateBorder3-removebg-preview.png");
 }
 
 
