@@ -1,134 +1,150 @@
-/* -----------------------------------
-   ABOUT PAGE STYLES — SpiceSync Theme
------------------------------------ */
-
-.about-container {
-  width: 100%;
-  max-width: var(--maxw);
-  margin: 120px auto 100px; /* pushes down below navbar */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 80px; /* space between each section */
-  position: relative;
-  padding: 0 16px;
-}
-
-.about-container h1 {
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+/* ---------- Main Layout ---------- */
+.about-main {
+  margin-top: 6rem; /* push below navbar */
   text-align: center;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 40px;
-  border-bottom: 3px solid var(--accent);
-  display: inline-block;
-  padding-bottom: 8px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1.5rem;
 }
 
-/* -------- Section cards -------- */
+.about-main h1 {
+  font-family: "Merriweather", serif;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+
+.intro-text {
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 3rem;
+}
+
+/* ---------- Sections ---------- */
 .about-section {
-  position: relative;
-  width: 100%;
   display: flex;
   justify-content: center;
-}
-
-.about-card {
-  background: var(--card-bg, #fff);
-  border: 3px solid var(--accent);
-  border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 24px;
-  padding: 24px;
-  max-width: 900px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 4rem;
 }
 
-.about-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-.about-img {
-  flex: 1 1 300px;
-  width: 100%;
-  height: auto;
+.about-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background: #fffdf6;
+  padding: 2rem;
   border-radius: 14px;
-  object-fit: cover;
-  border: 2px solid var(--accent);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
 }
 
-.about-text {
-  flex: 2 1 400px;
+.about-content:hover {
+  transform: translateY(-3px);
 }
 
-.about-text h2 {
-  margin: 0 0 12px;
-  font-size: 1.6rem;
+.about-content.bordered {
+  border: 4px solid rgb(84, 47, 23); /* rich brown border */
+  border-radius: 18px; /* rounder edges */
+  background: #fffdf8; /* soft warm tone inside */
+  box-shadow: 0 8px 24px rgba(100, 60, 20, 0.1); /* gentle brownish shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.about-content.bordered:hover {
+  transform: translateY(-4px);
+  border-color: rgba(120, 72, 40, 0.55);
+  box-shadow: 0 10px 28px rgba(100, 60, 20, 0.15);
+}
+
+.about-content img {
+  width: 45%;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+.about-content .text {
+  width: 50%;
+  text-align: left;
+}
+
+.about-content h2 {
+  font-family: "Merriweather", serif;
+  margin-bottom: 0.5rem;
   color: var(--ink);
 }
 
-.about-text p {
-  margin: 0;
+.about-content p {
   color: var(--muted);
   line-height: 1.6;
-  font-size: 1rem;
-  font-style: italic;
 }
 
-/* -------- Connectors -------- */
-.connector {
-  width: 120px;
-  height: 300px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.connector-svg {
+/* ---------- Connector Images ---------- */
+.connector-image {
   width: 100%;
+  max-width: 920px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 4rem;
+  pointer-events: none;
+}
+
+.connector-image img {
+  width: auto;
+  max-width: 180px;
   height: 100%;
-  overflow: visible;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateY(12px) scale(0.995);
+  clip-path: inset(0 0 100% 0);
+  transition:
+    clip-path 900ms cubic-bezier(.2,.8,.2,1),
+    opacity 420ms ease 120ms,
+    transform 700ms cubic-bezier(.2,.8,.2,1);
 }
 
-.connector-path {
-  stroke-linecap: round;
-  fill: none;
+.connector-image.animated img {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  clip-path: inset(0 0 0 0);
 }
 
-.connector-path.main {
-  stroke: var(--accent);
-  stroke-width: 6px;
-  opacity: 0.6;
-  animation: drawMain 4s ease-in-out infinite alternate;
+.connector-image img {
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
-.connector-path.sketch {
-  stroke: var(--ink);
-  stroke-width: 4px;
-  opacity: 0.3;
-  animation: drawSketch 5s ease-in-out infinite alternate;
+/* Slight floating animation */
+.connector-image.animated img {
+  animation: subtle-jitter 3.6s ease-in-out infinite;
+  animation-delay: calc(var(--reveal-delay, 0ms) + 200ms);
 }
 
-@keyframes drawMain {
-  0% {
-    stroke-dashoffset: 100;
+@keyframes subtle-jitter {
+  0%, 100% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(-0.6px) scale(1.001); }
+  50% { transform: translateY(0.4px) scale(0.999); }
+  75% { transform: translateY(-0.3px) scale(1.0002); }
+}
+
+@media (max-width: 720px) {
+  .about-content {
+    flex-direction: column;
+    text-align: center;
   }
-  100% {
-    stroke-dashoffset: 0;
+  .about-content img {
+    width: 80%;
+  }
+  .about-content .text {
+    width: 100%;
+  }
+  .connector-image {
+    height: 120px;
+  }
+  .connector-image img {
+    max-width: 120px;
   }
 }
-
-@keyframes drawSketch {
-  0% {
-    stroke-dashoffset: 200;
-  }
-  100% {
-    stroke-dashoffset: -100;
-  }
-}
-
