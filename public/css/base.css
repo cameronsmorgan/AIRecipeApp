@@ -17,30 +17,32 @@ body {
 }
 
 /* soft vignette + texture */
+body::before,
 body::after {
   content: "";
-  pointer-events: none;
   position: fixed;
-  inset: 0;
-  background: radial-gradient(60% 60% at 50% 45%,
-    rgba(255,245,230,0.00) 0%,
-    rgba(0,0,0,0.06) 60%,
-    rgba(0,0,0,0.16) 100%);
-  mix-blend-mode: multiply;
-  z-index: 0;
+  top: 0;
+  bottom: 0;
+  width: 200px; /* adjust based on image width */
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.9;
+  z-index: 0; /* behind everything */
 }
+
 body::before {
-  content: "";
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 15% 20%, rgba(0,0,0,0.02) 0 2%, transparent 6%),
-    radial-gradient(circle at 78% 80%, rgba(0,0,0,0.02) 0 2%, transparent 6%),
-    radial-gradient(circle at 50% 10%, rgba(0,0,0,0.01) 0 2%, transparent 6%);
-  opacity: 0.6;
-  z-index: 0;
+ top: 80px;
+   left: 0;
+  background-image: url("/public/assets/ornateBorder2-removebg-preview.png");
 }
+
+body::after {
+   top: 80px;
+  right: 0;
+  background-image: url("/public/assets/ornateBorder3-removebg-preview.png");
+}
+
 
 /* main container and headings */
 .container {

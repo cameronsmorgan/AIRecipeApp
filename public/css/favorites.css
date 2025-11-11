@@ -1,10 +1,10 @@
 .favorites-panel {
   position: fixed;
-  top: 0;
+  top: 56px; /* adjust this to match your navbar height */
   right: 0;
   width: 350px;
   max-width: 90%;
-  height: 100%;
+  height: calc(100% - 56px); /* subtract navbar height */
   background: #fff;
   box-shadow: -4px 0 12px rgba(0,0,0,0.2);
   transform: translateX(100%);
@@ -58,10 +58,13 @@
 }
 
 .floating-fav-btn {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 1100;
+  position: static;       /* remove fixed positioning */
+  display: inline-flex;   /* inline with text */
+  align-items: center;    /* vertically center */
+  margin-left: 1rem;      /* spacing between text and button */
+  font-size: 0.95rem;     /* keep original size */
+  padding: 0.4rem 0.6rem; /* original padding */
+  vertical-align: middle; /* align with text baseline */
 }
 
 .favorites-actions {
